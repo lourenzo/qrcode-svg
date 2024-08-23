@@ -1,4 +1,4 @@
-package br.com.comprealugueagora.qrcode;
+package br.com.lourenzo.qrcode
 
 public class SvgQrCode {
 
