@@ -10,7 +10,7 @@
  * https://github.com/lourenzo/qrcode-svg
  */
 
-package br.com.lourenzo.qrcode
+package br.com.lourenzo.qrcode;
 
 import java.lang.ref.SoftReference;
 import java.util.HashSet;
