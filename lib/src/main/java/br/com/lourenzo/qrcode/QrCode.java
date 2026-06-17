@@ -16,8 +16,20 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * QR Code Generator supporting custom rendering and data encoding.
+ * Originally based on Nayuki's Fast QR Code Generator, modified for SVG compatibility
+ * and customized rendering pipelines.
+ */
 public final class QrCode {
 
+  /**
+   * Encodes a text string into a QR code with the specified error correction level.
+   *
+   * @param text the text to encode
+   * @param ecl  the error correction level to use
+   * @return a generated QrCode instance
+   */
   public static QrCode encodeText(String text, Ecc ecl) {
     Objects.requireNonNull(text);
     Objects.requireNonNull(ecl);
