@@ -4,32 +4,72 @@ import lombok.Builder;
 
 import static java.util.stream.IntStream.range;
 
+/**
+ * A builder and generator for customized SVG-based QR codes.
+ * This class allows for generating highly customizable QR codes in SVG format,
+ * supporting modifications to the finder patterns, background/foreground colors,
+ * scaling, and the addition of custom elements like logos.
+ */
 @Builder
 public class SvgQrCode {
 
+  /**
+   * The background color of the QR code (used if useBackground is true).
+   * Format should be a valid SVG color string, such as a hex code.
+   */
   @Builder.Default
   private String backgroundColor = "#FFFFFF";
 
+  /**
+   * The foreground color of the QR code modules (the data dots).
+   * Format should be a valid SVG color string, such as a hex code.
+   */
   @Builder.Default
   private String foregroundColor = "#000000";
 
+  /**
+   * The radius of the omission zone in the center of the QR code.
+   * This is used to clear modules in the center to make room for a logo.
+   * Only applicable when custom finder patterns are used.
+   */
   @Builder.Default
   private Integer omitRadius = 4;
 
+  /**
+   * The scale factor for the SVG elements, effectively defining the base size
+   * of each module (dot) in the generated SVG.
+   */
   @Builder.Default
   private Integer scale = 10;
 
+  /**
+   * The thickness of the border around the QR code, measured in modules.
+   */
   @Builder.Default
   private Integer border = 4;
 
+  /**
+   * Whether to render a background rectangle for the QR code.
+   */
   @Builder.Default
   private Boolean useBackground = false;
 
+  /**
+   * Whether to use customized, visually distinct finder patterns and allow
+   * for a central omission zone (for a logo). If false, generates a standard QR code.
+   */
   @Builder.Default
   private Boolean useCustomFinderPatterns = true;
 
   private QrCode qr;
 
+  /**
+   * Generates the inner contents of the SVG element for the given URL or text.
+   * Note that this does not wrap the output in an {@code <svg>} tag.
+   *
+   * @param url the text or URL to encode in the QR code
+   * @return a string containing the SVG inner elements
+   */
   public String generateSvg(String url) {
     qr = QrCode.encodeText(url, QrCode.Ecc.HIGH);
 
@@ -61,6 +101,12 @@ public class SvgQrCode {
     return svg.toString();
   }
 
+  /**
+   * Generates a complete, standalone SVG document for the given URL or text.
+   *
+   * @param url the text or URL to encode in the QR code
+   * @return a string containing a complete XML/SVG document
+   */
   public String generateSvgFile(String url) {
     String contents = generateSvg(url);
     int totalSize = qr.size * scale + (2 * border * scale);
@@ -68,7 +114,7 @@ public class SvgQrCode {
     return """
       <?xml version="1.0" encoding="UTF-8"?>
       <svg xmlns="http://www.w3.org/2000/svg" width="%s" height="%s" viewBox="0 0 %s %s">
-      %sd
+      %s
       </svg>
       """.formatted(totalSize, totalSize, totalSize, totalSize, contents);
   }

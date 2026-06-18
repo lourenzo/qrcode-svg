@@ -12,3 +12,4 @@ plugins {
 
 rootProject.name = "qrcode-svg"
 include("lib")
+include("demo")
