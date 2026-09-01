@@ -64,6 +64,20 @@ public class SvgQrCode {
   private QrCode qr;
 
   /**
+   * Escapes XML special characters in a string.
+   */
+  private String escapeXml(String value) {
+    if (value == null) {
+      return null;
+    }
+    return value.replace("&", "&amp;")
+      .replace("<", "&lt;")
+      .replace(">", "&gt;")
+      .replace("\"", "&quot;")
+      .replace("'", "&apos;");
+  }
+
+  /**
    * Generates the inner contents of the SVG element for the given URL or text.
    * Note that this does not wrap the output in an {@code <svg>} tag.
    *
@@ -78,7 +92,7 @@ public class SvgQrCode {
     if (useBackground) {
       svg
         .append("\t<rect width=\"100%\" height=\"100%\" fill=\"")
-        .append(backgroundColor)
+        .append(escapeXml(backgroundColor))
         .append("\"/>\n");
     }
 
@@ -90,7 +104,7 @@ public class SvgQrCode {
         .forEach(x -> svg.append("\t<circle cx=\"").append((x + border) * scale + scale / 2.0)
           .append("\" cy=\"").append((y + border) * scale + scale / 2.0)
           .append("\" r=\"").append(scale / 2.2)
-          .append("\" fill=\"").append(foregroundColor).append("\"/>\n")));
+          .append("\" fill=\"").append(escapeXml(foregroundColor)).append("\"/>\n")));
 
     if (useCustomFinderPatterns) {
       svg
@@ -129,7 +143,7 @@ public class SvgQrCode {
     double f = ((qr.size - 8) / 2d * scale) + border * scale;
 
     String background = (useBackground)
-      ? "<rect x=\"50\" y=\"170\" fill=\"" + backgroundColor + "\" width=\"500\" height=\"500\" />"
+      ? "<rect x=\"50\" y=\"170\" fill=\"" + escapeXml(backgroundColor) + "\" width=\"500\" height=\"500\" />"
       : "";
 
     return """
