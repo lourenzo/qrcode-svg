@@ -96,11 +96,13 @@ public class SvgQrCode {
         .append("\"/>\n");
     }
 
+    final float center = (qr.size - 1) / 2f;
+
     range(0, qr.size)
       .forEach(y -> range(0, qr.size)
         .filter(x -> qr.getModule(x, y))
         .filter(x -> !isFinderPattern(x, y, qr.size))
-        .filter(x -> !isInOmissionZone(x, y, (qr.size - 1) / 2f, (qr.size - 1) / 2f, omitRadius))
+        .filter(x -> !isInOmissionZone(x, y, center, center, omitRadius))
         .forEach(x -> svg.append("\t<circle cx=\"").append((x + border) * scale + scale / 2.0)
           .append("\" cy=\"").append((y + border) * scale + scale / 2.0)
           .append("\" r=\"").append(scale / 2.2)
