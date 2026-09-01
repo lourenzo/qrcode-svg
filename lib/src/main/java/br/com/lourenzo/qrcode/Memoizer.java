@@ -55,7 +55,6 @@ final class Memoizer<T, R> {
         try {
           this.wait();
         } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
           throw new RuntimeException(e);
         }
       }
